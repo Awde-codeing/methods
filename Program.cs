@@ -1,18 +1,79 @@
-﻿namespace ConsoleApp1
+﻿using System;
+
+namespace ConsoleApp1
 {
     internal class Program
     {
         static void Main(string[] args)
         {
-            World();
-            Console.WriteLine("retunerd tekts" + Opg2());
-            Console.WriteLine("sum: " + Opg3());
-            Console.WriteLine("subtraktion af tal:" + Opg3A());
-            Console.WriteLine("gang af tal: " + Opg3b());
-            Console.WriteLine("division af tal" + Opg3C());
-            Console.WriteLine("Aldersgruppe: " + Opg4());
-            Opg5();
+            MainMenu();
+        }
 
+        static void MainMenu()
+        {
+            bool running = true;
+            while (running)
+            {
+                Console.WriteLine("Vælg en opgave:");
+                Console.WriteLine("1: Hello World");
+                Console.WriteLine("2: Udskriv tekst");
+                Console.WriteLine("3: Beregn sum");
+                Console.WriteLine("3A: Subtraher tal");
+                Console.WriteLine("3b: Multiplikater tal");
+                Console.WriteLine("3C: Beregn og divider");
+                Console.WriteLine("4: Bestem aldersgruppe");
+                Console.WriteLine("5: Tekst splitter");
+                Console.WriteLine("6: Gæt et tal");
+                Console.WriteLine("7A: Temp converter");
+                Console.WriteLine("9: Afslut programmet");
+                Console.Write("Indtast dit valg: ");
+                string valg = Console.ReadLine();
+
+                switch (valg)
+                {
+                    case "1":
+                        World();
+                        break;
+                    case "2":
+                        Console.WriteLine(Opg2());
+                        break;
+                    case "3":
+                        Opg3();
+                        break;
+                    case "3A":
+                        Opg3A();
+                        break;
+                    case "3b":
+                        Opg3b();
+                        break;
+                    case "3C":
+                        Opg3C();
+                        break;
+                    case "4":
+                        Opg4();
+                        break;
+                    case "5":
+                        Opg5();
+                        break;
+                    case "6":
+                        Opg6();
+                        break;
+                    case "7A":
+                       Opg7A();
+                    break;
+                    case "9":
+                        Console.WriteLine("Afslutter programmet.");
+                        running = false;
+                        break;
+                    case "default":
+                        Console.WriteLine("Ugyldigt valg. Vælg et gyldigt argument.");
+                        break;
+                }
+
+                Console.WriteLine("Tryk på en tast for at fortsætte...");
+                Console.ReadKey();
+                Console.Clear();
+            }
         }
         #region opgave 1
         public static string HelloWorld()
@@ -200,7 +261,7 @@
             string[] værdier = TekstSplitter(input);
             Console.WriteLine("Antal værdier: " + værdier.Length);
 
-            for (int i = 0; i < værdier.Length; i = i +1)
+            for (int i = 0; i < værdier.Length; i = i + 1)
             {
                 Console.WriteLine(værdier[i]);
             }
@@ -210,6 +271,104 @@
         {
             return input.Split(',');
         }
-        //Random.Next(1,26)
-    } 
+
+
+        static void Opg6()
+        {
+            bool vundet = false;
+            int tal = Random();
+            for (int i = 0; i < 5; i++)
+            {
+                Console.WriteLine("Skriv et tilfældigt tal mellem 1 og 25: ");
+                int input = Convert.ToInt32(Console.ReadLine());
+                bool Gæt1 = Gæt(input, tal);
+                if (Gæt1)
+                {
+                    vundet = true;
+                    i = 42;
+                }
+
+            }
+            if (vundet)
+            {
+                Console.WriteLine("Du har vundet!!!!!!!!!!");
+
+            }
+            else { Console.WriteLine("Du har tabt :("); }
+        }
+                static int Random()
+                {
+                    Random random = new Random();
+                    int tal = random.Next(1, 26);
+                    return tal;
+                }
+
+        static bool Gæt(int input, int tal)
+        {
+            if (input == tal)
+            {
+                return true;
+            }
+            else
+            {
+                HvorTætPå(input, tal);
+                return false;
+            }
+
+        }
+        static void HvorTætPå(int input, int tal)
+        {
+            if (input > tal)
+            {
+                Console.WriteLine("Gæt er højre end tal");
+            }
+            else
+            { Console.WriteLine("Gæt er mindre end tal"); }
+
+                    
+        }
+        static void Opg7A()
+        {
+            Console.WriteLine("Vælg input skala:");
+            Console.WriteLine("1: Celsius");
+            Console.WriteLine("2: Fahrenheit");
+            Console.Write("Indtast dit valg: ");
+            string Temps = Console.ReadLine();
+
+            double inputTemp;
+            Console.Write("Indtast temperatur: ");
+            while (!double.TryParse(Console.ReadLine(), out inputTemp))
+            {
+                Console.Write("Ugyldigt input. Indtast et tal: ");
+            }
+
+            double celsius, fahrenheit, kelvin, reaumur;
+
+            if (Temps == "1") // Input er Celsius
+            {
+                celsius = inputTemp;
+                fahrenheit = celsius * 9 / 5 + 32;
+                kelvin = celsius + 273.15;
+                reaumur = celsius * 0.8;
+            }
+            else if (Temps == "2") // Input er Fahrenheit
+            {
+                fahrenheit = inputTemp;
+                celsius = (fahrenheit - 32) * 5 / 9;
+                kelvin = celsius + 273.15;
+                reaumur = celsius * 0.8;
+            }
+            else
+            {
+                Console.WriteLine("Ugyldigt valg af skala.");
+                return;
+            }
+
+            Console.WriteLine($"Celsius:    {celsius:F2} °C");
+            Console.WriteLine($"Fahrenheit: {fahrenheit:F2} °F");
+            Console.WriteLine($"Kelvin:     {kelvin:F2} K");
+            Console.WriteLine($"Réaumur:    {reaumur:F2} °Ré");
+        }
+
+    }
 }

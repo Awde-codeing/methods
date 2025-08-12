@@ -24,7 +24,8 @@ namespace ConsoleApp1
                 Console.WriteLine("4: Bestem aldersgruppe");
                 Console.WriteLine("5: Tekst splitter");
                 Console.WriteLine("6: Gæt et tal");
-                Console.WriteLine("7A: Temp converter");
+                Console.WriteLine("7A: Temp Converter");
+                Console.WriteLine("7B: Tal Converter ");
                 Console.WriteLine("9: Afslut programmet");
                 Console.Write("Indtast dit valg: ");
                 string valg = Console.ReadLine();
@@ -59,8 +60,11 @@ namespace ConsoleApp1
                         Opg6();
                         break;
                     case "7A":
-                       Opg7A();
-                    break;
+                        Opg7A();
+                        break;
+                    case "7B":
+                        Opg7b();
+                        break;
                     case "9":
                         Console.WriteLine("Afslutter programmet.");
                         running = false;
@@ -296,12 +300,12 @@ namespace ConsoleApp1
             }
             else { Console.WriteLine("Du har tabt :("); }
         }
-                static int Random()
-                {
-                    Random random = new Random();
-                    int tal = random.Next(1, 26);
-                    return tal;
-                }
+        static int Random()
+        {
+            Random random = new Random();
+            int tal = random.Next(1, 26);
+            return tal;
+        }
 
         static bool Gæt(int input, int tal)
         {
@@ -325,7 +329,7 @@ namespace ConsoleApp1
             else
             { Console.WriteLine("Gæt er mindre end tal"); }
 
-                    
+
         }
         static void Opg7A()
         {
@@ -369,6 +373,191 @@ namespace ConsoleApp1
             Console.WriteLine($"Kelvin:     {kelvin:F2} K");
             Console.WriteLine($"Réaumur:    {reaumur:F2} °Ré");
         }
+        static void Opg7b()
+        {
+            HovedMenu();
 
+        }
+        static void HovedMenu()
+        {
+            while (true)
+            {
+                Console.WriteLine("=== Konverterings Menu ===");
+                Console.WriteLine("1. konvertering af tal");
+                Console.WriteLine("2. Afslut.");
+                Console.Write("Vælg en mulighed: ");
+
+                string valg = Console.ReadLine();
+
+                if (valg == "1")
+                {
+                    konverteringAfTal();
+                }
+                else if (valg == "2")
+                {
+                    Console.WriteLine("Afslutter programmet.");
+                    break;
+                }
+                else
+                {
+                    Console.WriteLine("Ugyldigt valg. Prøv igen.");
+                }
+                static void konverteringAfTal()
+                {
+                    Console.WriteLine("Indtast et Tal uden decimal: ");
+                    string input = Console.ReadLine();
+                    int tal;
+
+                    // Prøver at konvertere input til et heltal
+                    if (!int.TryParse(input, out tal))
+                    {
+                        Console.WriteLine("Ugyldigt input. Indtast venligst et gyldigt heltal.");
+                        return;
+                    }
+                    // Konverterer tallet til forskellige formater
+                    string binTal = ToBinary(tal);
+                    string hexTal = ToHexadecimal(tal);
+                    string DecimalTal = ToDecimal(tal);
+
+                    // Udskriver resultaterne,
+                    Console.WriteLine($"\nResultater for  {tal}");
+                    Console.WriteLine($"Binært tal:       {binTal}");
+                    Console.WriteLine($"Hexadecimalt tal: {hexTal}");
+                    Console.WriteLine($"decimal           {DecimalTal}");
+                }
+                static string ToDecimal(int T)
+                { return T.ToString(); }
+                static string ToHexadecimal(int T)
+                { return T.ToString("X"); }
+                static string ToBinary(int T)
+                {
+                    if (T == 0) return "0";
+                    string bin = "";
+                    int Tal = T;
+
+                    while (Tal > 0)
+                    {
+                        bin = (Tal % 2) + bin;
+                        Tal /= 2;
+                    }
+                    return bin;
+                }
+
+
+                static void opg7c()
+                {
+                    while (true)
+                    {
+                        Console.WriteLine("1. Beregn talserie");
+                        Console.WriteLine("2. Afslut");
+                        Console.Write("Vælg (1 eller 2): ");
+                        string valg = Console.ReadLine();
+
+                        if (valg == "1")
+                        {
+                            double resultat = BeregnTalSerie();
+                            Console.WriteLine($"Resultatet er: {resultat}\n");
+                        }
+                        else if (valg == "2")
+                        {
+                            Console.WriteLine("Farvel!");
+                            break; // Afslut programmet
+                        }
+                        else
+                        {
+                            Console.WriteLine("Ugyldigt valg, prøv igen.\n");
+                        }
+                    }
+                }
+
+                static double BeregnTalSerie()
+                {
+                    int antalTal;
+                    double faktor;
+                    bool sumResultat;
+
+                    // Læs antalTal
+                    while (true)
+                    {
+                        Console.Write("Hvor mange tal vil du indtaste? (heltal > 0): ");
+                        try
+                        {
+                            antalTal = int.Parse(Console.ReadLine());
+                            if (antalTal > 0) break;
+                            Console.WriteLine("Tallet skal være større end 0.");
+                        }
+                        catch
+                        {
+                            Console.WriteLine("Ugyldigt input, prøv igen.");
+                        }
+                    }
+
+                    // Læs faktor
+                    while (true)
+                    {
+                        Console.Write("Indtast faktor (decimal): ");
+                        try
+                        {
+                            faktor = double.Parse(Console.ReadLine());
+                            break;
+                        }
+                        catch
+                        {
+                            Console.WriteLine("Ugyldigt input, prøv igen.");
+                        }
+                    }
+
+                    // Læs sum eller produkt
+                    while (true)
+                    {
+                        Console.Write("Vil du summere (true) eller multiplicere (false)? (true/false): ");
+                        string input = Console.ReadLine().ToLower();
+                        if (input == "true")
+                        {
+                            sumResultat = true;
+                            break;
+                        }
+                        else if (input == "false")
+                        {
+                            sumResultat = false;
+                            break;
+                        }
+                        else
+                        {
+                            Console.WriteLine("Skriv 'true' eller 'false'.");
+                        }
+                    }
+
+                    double resultat = sumResultat ? 0 : 1;
+
+                    for (int i = 1; i <= antalTal; i++)
+                    {
+                        while (true)
+                        {
+                            Console.Write($"Indtast tal {i}: ");
+                            try
+                            {
+                                double tal = double.Parse(Console.ReadLine());
+                                double bearbejdet = tal * faktor;
+
+                                if (sumResultat)
+                                    resultat += bearbejdet;
+                                else
+                                    resultat *= bearbejdet;
+
+                                break;
+                            }
+                            catch
+                            {
+                                Console.WriteLine("Ugyldigt tal, prøv igen.");
+                            }
+                        }
+                    }
+
+                    return resultat;
+                }
+            }
+
+        }
     }
 }
